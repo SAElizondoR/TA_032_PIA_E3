@@ -1,0 +1,7 @@
+programa gato;
+iniciar
+leer i;
+leer j;
+leer k;
+imprimir  i;
+terminar.
