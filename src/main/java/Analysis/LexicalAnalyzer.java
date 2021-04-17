@@ -2,6 +2,9 @@ package Analysis;
 
 import Analysis.Results.*;
 
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+
 public class LexicalAnalyzer {
     public enum SentenceType {Operation, Print, Read, Header, Footer, Start}
 
@@ -68,6 +71,7 @@ public class LexicalAnalyzer {
 
     public OperationInfo getOperationInfo(String sentence)
     {
+
         OperationInfo operationInfo = new OperationInfo();
         operationInfo.setStatus(AnalysisOutput.Status.NO_ERROR);
         return operationInfo;
