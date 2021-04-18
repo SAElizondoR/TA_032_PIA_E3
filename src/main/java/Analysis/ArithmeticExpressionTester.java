@@ -111,12 +111,14 @@ public class ArithmeticExpressionTester {
                 SideStatus isRight = isSideValid(expr, pos, identifiers, 1); // Checa si la derecha es válida
                 if(!isLeft.success)
                 {
-                    infoBadExpression.setErrorCause("Identificador \""+ isLeft.identifier + "\" no declarado");
+                    if(isLeft.identifier != null)
+                        infoBadExpression.setErrorCause("Identificador \""+ isLeft.identifier + "\" no declarado");
                     return infoBadExpression;
                 }
                 if(!isRight.success)
                 {
-                    infoBadExpression.setErrorCause("Identificador \""+ isRight.identifier + "\" no declarado");
+                    if(isRight.identifier != null)
+                        infoBadExpression.setErrorCause("Identificador \""+ isRight.identifier + "\" no declarado");
                     return infoBadExpression;
                 }
             }
@@ -125,12 +127,14 @@ public class ArithmeticExpressionTester {
                 SideStatus isRight = isSideValid(expr, pos, identifiers, 1); // Checa si la derecha es válida
                 if(!isLeft.success)
                 {
-                    infoBadExpression.setErrorCause("Identificador \""+ isLeft.identifier + "\" no declarado");
+                    if(isLeft.identifier != null)
+                        infoBadExpression.setErrorCause("Identificador \""+ isLeft.identifier + "\" no declarado");
                     return infoBadExpression;
                 }
                 if(!isRight.success)
                 {
-                    infoBadExpression.setErrorCause("Identificador \""+ isRight.identifier + "\" no declarado");
+                    if(isRight.identifier != null)
+                        infoBadExpression.setErrorCause("Identificador \""+ isRight.identifier + "\" no declarado");
                     return infoBadExpression;
                 }
             }
@@ -143,14 +147,16 @@ public class ArithmeticExpressionTester {
             if (c == '*') {
                 SideStatus isLeft = isSideValid(expr, pos, identifiers, -1); // Checa si la izquierda es válida
                 SideStatus isRight = isSideValid(expr, pos, identifiers, 1); // Checa si la derecha es válida
-                if(!isLeft.success)
+                if(!isLeft.success )
                 {
-                    infoBadExpression.setErrorCause("Identificador \""+ isLeft.identifier + "\" no declarado");
+                    if(isLeft.identifier != null)
+                        infoBadExpression.setErrorCause("Identificador \""+ isLeft.identifier + "\" no declarado");
                     return infoBadExpression;
                 }
                 if(!isRight.success)
                 {
-                    infoBadExpression.setErrorCause("Identificador \""+ isRight.identifier + "\" no declarado");
+                    if(isRight.identifier != null)
+                        infoBadExpression.setErrorCause("Identificador \""+ isRight.identifier + "\" no declarado");
                     return infoBadExpression;
                 }
             }
@@ -159,12 +165,14 @@ public class ArithmeticExpressionTester {
                 SideStatus isRight = isSideValid(expr, pos, identifiers, 1); // Checa si la derecha es válida
                 if(!isLeft.success)
                 {
-                    infoBadExpression.setErrorCause("Identificador \""+ isLeft.identifier + "\" no declarado");
+                    if(isLeft.identifier != null)
+                        infoBadExpression.setErrorCause("Identificador \""+ isLeft.identifier + "\" no declarado");
                     return infoBadExpression;
                 }
                 if(!isRight.success)
                 {
-                    infoBadExpression.setErrorCause("Identificador \""+ isRight.identifier + "\" no declarado");
+                    if(isRight.identifier != null)
+                        infoBadExpression.setErrorCause("Identificador \""+ isRight.identifier + "\" no declarado");
                     return infoBadExpression;
                 }
             }
@@ -179,12 +187,14 @@ public class ArithmeticExpressionTester {
                 SideStatus isRight = isSideValid(expr, pos, identifiers, 1); // Checa si la derecha es válida
                 if(!isLeft.success)
                 {
-                    infoBadExpression.setErrorCause("Identificador \""+ isLeft.identifier + "\" no declarado");
+                    if(isLeft.identifier != null)
+                        infoBadExpression.setErrorCause("Identificador \""+ isLeft.identifier + "\" no declarado");
                     return infoBadExpression;
                 }
                 if(!isRight.success)
                 {
-                    infoBadExpression.setErrorCause("Identificador \""+ isRight.identifier + "\" no declarado");
+                    if(isRight.identifier != null)
+                        infoBadExpression.setErrorCause("Identificador \""+ isRight.identifier + "\" no declarado");
                     return infoBadExpression;
                 }
             }
