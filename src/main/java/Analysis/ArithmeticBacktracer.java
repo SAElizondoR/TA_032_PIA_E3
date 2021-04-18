@@ -147,6 +147,7 @@ public class ArithmeticBacktracer {
         if(subChains.size()==0) return status;
 
         for(String chain : subChains) {
+            if (chain.equals("")) return status;
             GoUpResult result = null;
             do {
                 chain = constant(chain);
