@@ -11,8 +11,14 @@ public class LangAnalyzer {
 
     private int fileLine = 0;
     private HashSet<String> declaredIdentifiers = new HashSet<>();
+    private String filename;
 
-    public AnalysisOutput checkProgram(String filename) {
+    public LangAnalyzer(String filename)
+    {
+        this.filename = filename;
+    }
+
+    public AnalysisOutput checkProgram() {
         try {
             return runTest(filename);
         } catch (FileNotFoundException e) {
@@ -60,7 +66,13 @@ public class LangAnalyzer {
         return error;
     }
 
+    public HashSet<String> getDeclaredIdentifiers()
+    {
+        return  declaredIdentifiers;
+    }
+
     public AnalysisOutput runTest(String filename) throws FileNotFoundException {
+        //No cierro el scanner :p
         File file = new File(filename);
         Scanner scanner = new Scanner(file);
         LexicalAnalyzer analyzer = new LexicalAnalyzer();
@@ -141,11 +153,29 @@ public class LangAnalyzer {
                         if (operationInfo.getStatus() != AnalysisOutput.Status.NO_ERROR) //Si truena por un error lexico/gramático
                             return operationInfo.makeOutput(fileLine);
 
-                        ArithmeticExpressionInfo expressionStatus =
-                                ArithmeticExpressionTester.checkExpression(operationInfo.getExpression(), declaredIdentifiers);
+                        ArithmeticBacktracer backtracker = new ArithmeticBacktracer(operationInfo.getExpression());
 
-                        if(expressionStatus.getStatus() != AnalysisOutput.Status.NO_ERROR)
-                            return expressionStatus.makeOutput(fileLine);
+                        ArithmeticBacktracer.ArithmeticBacktrackerStatus expressionStatus =
+                                backtracker.checkExpr();
+
+                        if(expressionStatus.status != AnalysisOutput.Status.NO_ERROR)
+                        {
+                            AnalysisOutput error = new AnalysisOutput();
+                            error.setCause(expressionStatus.errorCause);
+                            error.setErrorLine(fileLine);
+                            error.setStatus(expressionStatus.status);
+                            return error;
+                        }
+
+                        String notDeclaredIdentifier = backtracker.checkIdentifiers(declaredIdentifiers);
+                        if(notDeclaredIdentifier != null)
+                        {
+                            AnalysisOutput error = new AnalysisOutput();
+                            error.setCause("Identificador \"" + notDeclaredIdentifier + "\" no declarado");
+                            error.setErrorLine(fileLine);
+                            error.setStatus(AnalysisOutput.Status.NOT_DEFINED_VAR);
+                            return error;
+                        }
 
                         registerIdentifier(operationInfo.getIdentifier());
 

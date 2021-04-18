@@ -1,5 +1,6 @@
-package Analysis;
+package Deprecated;
 
+import Analysis.RegexStrings;
 import Analysis.Results.AnalysisOutput;
 import Analysis.Results.ArithmeticExpressionInfo;
 

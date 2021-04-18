@@ -1,16 +1,22 @@
-import Analysis.ArithmeticExpressionTester;
-import Analysis.LangAnalyzer;
-import Analysis.RegexStrings;
+import Analysis.*;
 import Analysis.Results.AnalysisOutput;
 import Analysis.Results.ArithmeticExpressionInfo;
 
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class run {
     static public void main(String[] args) {
         //Scanner scanner = new Scanner(System.in);
+        //scanner.nextDouble();
         //String file = scanner.nextLine();
+
         HashSet<String> identifiers = new HashSet<>();
         identifiers.add("i");
         identifiers.add("j");
@@ -33,18 +39,27 @@ public class run {
         int p = 2;
         int k = 2;
         int j =2;
-        int l = (p+6*(i)*k)^2*3/i*j*3/50;
+        int l = ((2^3)*2^4/5)^(2*3);
+        int ke = +-2;
+
+
+        //ArithmeticBacktracer backtracer = new ArithmeticBacktracer("((2)+2+4^4)+(p+6*(i)*k)^2*3/i*j*3/50");
+
+        //ArithmeticBacktracer.ArithmeticBacktrackerStatus valid = backtracer.checkExpr();
+        //backtracer.checkExpr();
+
 
         //Es un numero sólo válido?
+        /*
         ArithmeticExpressionInfo info = ArithmeticExpressionTester.checkExpression("(p+6*(i)*k)^2*3/i*j*3/50", identifiers);
 
         if(info.getStatus() == AnalysisOutput.Status.NO_ERROR)
             System.out.println("EXPRESION VALIDA");
         else
             System.out.println("EXPRESION INVALIDA");
-
-        LangAnalyzer analyzer = new LangAnalyzer();
-        AnalysisOutput output = analyzer.checkProgram("C:\\Users\\garza\\OneDrive\\TA_032_PIA_E3\\Ejemplo.txt");
+        */
+        LangAnalyzer analyzer = new LangAnalyzer("C:\\Users\\garza\\OneDrive\\TA_032_PIA_E3\\Ejemplo.txt");
+        AnalysisOutput output = analyzer.checkProgram();
         if(output.getStatus() != AnalysisOutput.Status.NO_ERROR)
         {
             System.out.println("ERROR EN LINEA : " + output.getErrorLine());
