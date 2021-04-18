@@ -13,6 +13,7 @@ public class LexicalAnalyzer {
     private static final String PROGRAMA = "programa ";
     private static final String INICIAR = "iniciar";
     private static final String TERMINAR = "terminar.";
+    private static final String ASIGNACION = ":=";
 
     public SentenceType getSentenceType(String sentence)
     {
@@ -71,8 +72,47 @@ public class LexicalAnalyzer {
 
     public OperationInfo getOperationInfo(String sentence)
     {
-
         OperationInfo operationInfo = new OperationInfo();
+        if(!endsWithSC(sentence))
+        {
+            operationInfo.setStatus(AnalysisOutput.Status.NO_SC);
+            operationInfo.setErrorCause("No termina en ;");
+            return operationInfo;
+        }
+
+        char[] chars = sentence.toCharArray();
+        StringBuilder builder =new StringBuilder();
+
+        int identifierEnd = 0;
+        for(char c : chars)
+        {
+            if(Character.isWhitespace(c))
+                break;
+            builder.append(c);
+            identifierEnd++;
+        }
+
+        String identifier = builder.toString();
+        if(!identifier.matches(RegexStrings.IDENTIFIER_NAME)) //Si el identificador es inválido
+        {
+            operationInfo.setStatus(AnalysisOutput.Status.WRONG_IDENTIFIER);
+            operationInfo.setErrorCause("Nombre de identificador inválido");
+            return operationInfo;
+        }
+
+        String rest = sentence.substring(identifierEnd+1);
+        if(!rest.startsWith(":="))
+        {
+            operationInfo.setStatus(AnalysisOutput.Status.EXPECTED_OPERATOR);
+            operationInfo.setErrorCause("Se esperaba operador se asignación");
+            return operationInfo;
+        }
+
+
+        rest = rest.substring(ASIGNACION.length()+1, rest.length()-1);
+
+        operationInfo.setIdentifier(identifier);
+        operationInfo.setExpression(rest);
         operationInfo.setStatus(AnalysisOutput.Status.NO_ERROR);
         return operationInfo;
     }

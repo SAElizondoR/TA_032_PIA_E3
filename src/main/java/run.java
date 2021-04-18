@@ -2,6 +2,7 @@ import Analysis.ArithmeticExpressionTester;
 import Analysis.LangAnalyzer;
 import Analysis.RegexStrings;
 import Analysis.Results.AnalysisOutput;
+import Analysis.Results.ArithmeticExpressionInfo;
 
 import java.util.HashSet;
 
@@ -29,10 +30,18 @@ public class run {
         // 2(6)
 
         int i = 2;
-        int p= (((i)/2*2+2*6/(2)));
+        int p = 2;
+        int k = 2;
+        int j =2;
+        int l = (p+6*(i)*k)^2*3/i*j*3/50;
 
-        boolean valid = ArithmeticExpressionTester.checkExpression("p+6*(i)*k)^2*3/i*j*3/50", identifiers);
-        System.out.println(valid);
+        //Es un numero sólo válido?
+        ArithmeticExpressionInfo info = ArithmeticExpressionTester.checkExpression("(p+6*(i)*k)^2*3/i*j*3/50", identifiers);
+
+        if(info.getStatus() == AnalysisOutput.Status.NO_ERROR)
+            System.out.println("EXPRESION VALIDA");
+        else
+            System.out.println("EXPRESION INVALIDA");
 
         LangAnalyzer analyzer = new LangAnalyzer();
         AnalysisOutput output = analyzer.checkProgram("C:\\Users\\garza\\OneDrive\\TA_032_PIA_E3\\Ejemplo.txt");
@@ -42,6 +51,6 @@ public class run {
             System.out.println(output.getCause());
             return;
         }
-        System.out.println("NO ERROR");
+        System.out.println("PROGRAMA SIN ERRORES");
     }
 }

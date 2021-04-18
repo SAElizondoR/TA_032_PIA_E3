@@ -41,7 +41,7 @@ public class LangAnalyzer {
         }
 
         if (!hasStart) { //Si falta inicio
-            error.setStatus(AnalysisOutput.Status.NO_START);
+            error.setStatus(AnalysisOutput.Status.PROGRAM_NOT_STARTED);
             error.setErrorLine(line);
             error.setCause("La sentencia requiere que se inicie el programa");
             return error;
@@ -140,6 +140,15 @@ public class LangAnalyzer {
 
                         if (operationInfo.getStatus() != AnalysisOutput.Status.NO_ERROR) //Si truena por un error lexico/gramático
                             return operationInfo.makeOutput(fileLine);
+
+                        ArithmeticExpressionInfo expressionStatus =
+                                ArithmeticExpressionTester.checkExpression(operationInfo.getExpression(), declaredIdentifiers);
+
+                        if(expressionStatus.getStatus() != AnalysisOutput.Status.NO_ERROR)
+                            return expressionStatus.makeOutput(fileLine);
+
+                        registerIdentifier(operationInfo.getIdentifier());
+
 
                         if (!isDefined(operationInfo.getIdentifier())) //Si truena por que no está definida
                         {
@@ -246,7 +255,7 @@ public class LangAnalyzer {
                     } else //Manejar terminacion de programa no iniciado
                     {
                         AnalysisOutput error = new AnalysisOutput();
-                        error.setStatus(AnalysisOutput.Status.WRONG_END);
+                        error.setStatus(AnalysisOutput.Status.PROGRAM_NOT_STARTED);
                         error.setCause("Se ha llamado a la terminación de un programa no iniciado");
                         error.setErrorLine(fileLine);
                         scanner.close();
@@ -266,7 +275,7 @@ public class LangAnalyzer {
         else { //En caso de que tod_o el programa este correcto pero falte el footer
             if (!hasFooter) { //Si el programa no tiene final
                 AnalysisOutput error = new AnalysisOutput();
-                error.setStatus(AnalysisOutput.Status.NO_HEADER);
+                error.setStatus(AnalysisOutput.Status.NO_FOOTER);
                 error.setErrorLine(fileLine);
                 error.setCause("El programa no tiene la sentencia terminar");
                 return error;
