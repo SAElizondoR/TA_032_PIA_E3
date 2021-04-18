@@ -61,7 +61,7 @@ public class LexicalAnalyzer {
         String identifier = sentence.substring(IMPRIMIR.length(), sentence.length()-1);
         if(!identifier.matches(RegexStrings.IDENTIFIER_NAME))
         {
-            printInfo.setStatus(AnalysisOutput.Status.WRONG_IDENTIFIER);
+            printInfo.setStatus(AnalysisOutput.Status.BAD_IDENTIFIER);
             printInfo.setErrorCause("Nombre inválido");
             return printInfo;
         }
@@ -95,7 +95,7 @@ public class LexicalAnalyzer {
         String identifier = builder.toString();
         if(!identifier.matches(RegexStrings.IDENTIFIER_NAME)) //Si el identificador es inválido
         {
-            operationInfo.setStatus(AnalysisOutput.Status.WRONG_IDENTIFIER);
+            operationInfo.setStatus(AnalysisOutput.Status.BAD_IDENTIFIER);
             operationInfo.setErrorCause("Nombre de identificador inválido");
             return operationInfo;
         }
@@ -129,7 +129,7 @@ public class LexicalAnalyzer {
         String identifier = sentence.substring(IMPRIMIR.length(), sentence.length()-1);
         if(!identifier.matches(RegexStrings.IDENTIFIER_NAME))
         {
-            headerInfo.setStatus(AnalysisOutput.Status.WRONG_IDENTIFIER);
+            headerInfo.setStatus(AnalysisOutput.Status.BAD_IDENTIFIER);
             headerInfo.setErrorCause("Nombre inválido");
             return headerInfo;
         }

@@ -48,7 +48,7 @@ public class LangAnalyzer {
         }
 
         if (footerLine != fileLine) { //Sentencias después de la terminación
-            error.setStatus(AnalysisOutput.Status.WRONG_END);
+            error.setStatus(AnalysisOutput.Status.BAD_END);
             error.setErrorLine(line);
             error.setCause("El hay más sentencias después del final del programa");
             return error;
@@ -212,7 +212,7 @@ public class LangAnalyzer {
                         } else //Tiramos error por programa terminado
                         {
                             AnalysisOutput error = new AnalysisOutput();
-                            error.setStatus(AnalysisOutput.Status.WRONG_START);
+                            error.setStatus(AnalysisOutput.Status.BAD_START);
                             error.setCause("Sentencia inicio en programa terminado");
                             error.setErrorLine(fileLine);
                             scanner.close();
@@ -221,7 +221,7 @@ public class LangAnalyzer {
                     } else //Tiramos errro por programa no declarado
                     {
                         AnalysisOutput error = new AnalysisOutput();
-                        error.setStatus(AnalysisOutput.Status.WRONG_START);
+                        error.setStatus(AnalysisOutput.Status.BAD_START);
                         error.setCause("El programa no se ha declarado");
                         error.setErrorLine(fileLine);
                         scanner.close();
