@@ -40,7 +40,6 @@ public class run {
         int k = 2;
         int j =2;
         int l = ((2^3)*2^4/5)^(2*3);
-        int ke = +-2;
 
 
         //ArithmeticBacktracer backtracer = new ArithmeticBacktracer("((2)+2+4^4)+(p+6*(i)*k)^2*3/i*j*3/50");

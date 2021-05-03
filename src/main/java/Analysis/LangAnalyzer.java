@@ -87,13 +87,22 @@ public class LangAnalyzer {
         boolean hasFooter = false;
         int footerLine = 0;
 
+        boolean hasOneInstruction = false;
+
+        AnalysisOutput error = new AnalysisOutput();
+
 
         while (scanner.hasNextLine())
         {
             fileLine++;
             String line = scanner.nextLine();
             if (line.isBlank()) //Si la linea es blanca la saltamos
-                continue;
+            {
+                error.setStatus(AnalysisOutput.Status.UKNOWN);
+                error.setCause("Linea en blanco");
+                error.setErrorLine(fileLine);
+                return error;
+            }
 
             LexicalAnalyzer.SentenceType type = analyzer.getSentenceType(line); //Sacamos el tipo
 
@@ -109,13 +118,13 @@ public class LangAnalyzer {
 
                         if (isDefined(readInfo.getIdentifier())) //Si truena por que ya está definida
                         {
-                            AnalysisOutput error = new AnalysisOutput();
                             error.setStatus(AnalysisOutput.Status.ALREADY_DEFINED_VAR);
                             error.setCause("La variable " + readInfo.getIdentifier() + " ya está definida! [ERROR LEXICO???]");
                             error.setErrorLine(fileLine);
-                            scanner.close();
                             return error;
                         }
+                        if(!hasOneInstruction)
+                            hasOneInstruction=true;
                         registerIdentifier(readInfo.getIdentifier()); //Si tod_o está bien registramos el identificador
                     } else //En caso de que haya alguna situacion con los requisitos de la sentencia tiramos error
                         return makeInvalidProgram(fileLine, hasHeader, hasStart, hasFooter, footerLine);
@@ -133,7 +142,6 @@ public class LangAnalyzer {
 
                         if (!isDefined(printInfo.getIdentifier())) //Si truena por que no está definida
                         {
-                            AnalysisOutput error = new AnalysisOutput();
                             error.setStatus(AnalysisOutput.Status.NOT_DEFINED_VAR);
                             error.setCause("La variable " + printInfo.getIdentifier() + " no está definida! [ERROR LEXICO???]");
                             error.setErrorLine(fileLine);
@@ -160,7 +168,6 @@ public class LangAnalyzer {
 
                         if(expressionStatus.status != AnalysisOutput.Status.NO_ERROR)
                         {
-                            AnalysisOutput error = new AnalysisOutput();
                             error.setCause(expressionStatus.errorCause);
                             error.setErrorLine(fileLine);
                             error.setStatus(expressionStatus.status);
@@ -170,25 +177,25 @@ public class LangAnalyzer {
                         String notDeclaredIdentifier = backtracker.checkIdentifiers(declaredIdentifiers);
                         if(notDeclaredIdentifier != null)
                         {
-                            AnalysisOutput error = new AnalysisOutput();
                             error.setCause("Identificador \"" + notDeclaredIdentifier + "\" no declarado");
                             error.setErrorLine(fileLine);
                             error.setStatus(AnalysisOutput.Status.NOT_DEFINED_VAR);
                             return error;
                         }
 
-                        registerIdentifier(operationInfo.getIdentifier());
-
-
-                        if (!isDefined(operationInfo.getIdentifier())) //Si truena por que no está definida
+                        boolean divisionBy0 = backtracker.checkDivisionBy0();
+                        if(divisionBy0)
                         {
-                            AnalysisOutput error = new AnalysisOutput();
-                            error.setStatus(AnalysisOutput.Status.NOT_DEFINED_VAR);
-                            error.setCause("La variable " + operationInfo.getIdentifier() + " no está definida! [ERROR LEXICO???]");
+                            error.setCause("Division entre 0");
                             error.setErrorLine(fileLine);
-                            scanner.close();
+                            error.setStatus(AnalysisOutput.Status.UKNOWN);
                             return error;
                         }
+
+                        registerIdentifier(operationInfo.getIdentifier()); //???
+                        if(!hasOneInstruction)
+                            hasOneInstruction=true;
+
                     } else //Tiramos error
                         return makeInvalidProgram(fileLine, hasHeader, hasStart, hasFooter, footerLine);
                     break;
@@ -208,7 +215,6 @@ public class LangAnalyzer {
                             return headerInfo.makeOutput(fileLine);
                     } else //Tiramos error si hay encabezado duplicado
                     {
-                        AnalysisOutput error = new AnalysisOutput();
                         error.setStatus(AnalysisOutput.Status.DUPLICATED_HEADER);
                         error.setCause("Hay más de una sentencia programa! [ERROR LEXICO???]");
                         error.setErrorLine(fileLine);
@@ -232,7 +238,6 @@ public class LangAnalyzer {
                                 } else
                                     return startInfo.makeOutput(fileLine);
                             } else { //Tiramos error por duplicados
-                                AnalysisOutput error = new AnalysisOutput();
                                 error.setStatus(AnalysisOutput.Status.DUPLICATED_START);
                                 error.setCause("Hay más de una sentencia inicio! [ERROR LEXICO???]");
                                 error.setErrorLine(fileLine);
@@ -241,7 +246,6 @@ public class LangAnalyzer {
                             }
                         } else //Tiramos error por programa terminado
                         {
-                            AnalysisOutput error = new AnalysisOutput();
                             error.setStatus(AnalysisOutput.Status.BAD_START);
                             error.setCause("Sentencia inicio en programa terminado");
                             error.setErrorLine(fileLine);
@@ -250,7 +254,6 @@ public class LangAnalyzer {
                         }
                     } else //Tiramos errro por programa no declarado
                     {
-                        AnalysisOutput error = new AnalysisOutput();
                         error.setStatus(AnalysisOutput.Status.BAD_START);
                         error.setCause("El programa no se ha declarado");
                         error.setErrorLine(fileLine);
@@ -274,7 +277,6 @@ public class LangAnalyzer {
                                 return footerInfo.makeOutput(fileLine);
                         } else //Terminar duplicados
                         {
-                            AnalysisOutput error = new AnalysisOutput();
                             error.setStatus(AnalysisOutput.Status.DUPLICATED_FOOTER);
                             error.setCause("Hay más de una sentencia terminar! [ERROR LEXICO???]");
                             error.setErrorLine(fileLine);
@@ -284,7 +286,6 @@ public class LangAnalyzer {
 
                     } else //Manejar terminacion de programa no iniciado
                     {
-                        AnalysisOutput error = new AnalysisOutput();
                         error.setStatus(AnalysisOutput.Status.PROGRAM_NOT_STARTED);
                         error.setCause("Se ha llamado a la terminación de un programa no iniciado");
                         error.setErrorLine(fileLine);
@@ -295,6 +296,15 @@ public class LangAnalyzer {
             }
         }
 
+
+        if(!hasOneInstruction)
+        {
+            error.setStatus(AnalysisOutput.Status.UKNOWN);
+            error.setErrorLine(fileLine);
+            error.setCause("El programa no tiene al menos una instrucción");
+            return error;
+        }
+
         //Si tiene footer quiere decir que tiene inicio y declaración de programa y si no ha tronado en algun otro lado
         //significa que tod_o está correcto
         if (hasFooter) {
@@ -303,17 +313,11 @@ public class LangAnalyzer {
             return noError;
         }
         else { //En caso de que tod_o el programa este correcto pero falte el footer
-            if (!hasFooter) { //Si el programa no tiene final
-                AnalysisOutput error = new AnalysisOutput();
                 error.setStatus(AnalysisOutput.Status.NO_FOOTER);
                 error.setErrorLine(fileLine);
                 error.setCause("El programa no tiene la sentencia terminar");
                 return error;
-            }
         }
-
-        //Error desconocido, si llegamos aquí es hora de llorar
-        return makeInvalidProgram(fileLine, hasHeader, hasStart, hasFooter, footerLine);
     }
 
 }

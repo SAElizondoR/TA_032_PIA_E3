@@ -7,6 +7,7 @@ import java.util.HashSet;
 
 public class ArithmeticBacktracer {
     private String expr = null;
+    private String originalExpr = null;
     private ArrayList<String> subChains = new ArrayList<>();
 
     private HashSet<String> identifiers = new HashSet<>();
@@ -15,6 +16,7 @@ public class ArithmeticBacktracer {
 
     public ArithmeticBacktracer(String expr) {
         this.expr = expr;
+        this.originalExpr = expr;
         makeDs();
         splitChain(this.expr);
     }
@@ -120,7 +122,7 @@ public class ArithmeticBacktracer {
         expr = newExpr.toString();
     }
 
-    //Check if any of the identifiers of the expression is not declares
+    //Check if any of the identifiers of the expression is not declared
     public String checkIdentifiers(HashSet<String> declaredIdentifiers)
     {
         for(String id : identifiers)
@@ -310,6 +312,14 @@ public class ArithmeticBacktracer {
         };
     }
 
+    private boolean matchesOperator(char c)
+    {
+        return switch (c) {
+            case '+', '-', '*', '/', '(', ')' -> true;
+            default -> false;
+        };
+    }
+
     private String constant(String str){
         if(str.matches("([\\-\\+]?)([A-D])|([\\-\\+]?)([S])")) return "S";
         return str;
@@ -362,6 +372,30 @@ public class ArithmeticBacktracer {
 
     private String SR(String str) {
         return str.replaceAll(RegexStrings.SR, "S");
+    }
+
+    public boolean checkDivisionBy0()
+    {
+        String clone  = originalExpr;
+        char[] chars = clone.toCharArray();
+        int countBar = 0;
+        for(char c : chars) {
+            if (c == '/')
+                countBar++;
+        }
+        for(int i = 0; i<countBar; i++)
+        {
+            int location = clone.indexOf("/");
+            clone.replace("/", "%");
+            for(int p=location+1; p<clone.length(); p++)
+            {
+                if(matchesOperator(chars[p]) || p+1==clone.length())
+                    return true;
+                if(chars[p] != '0')
+                    break;
+            }
+        }
+        return false;
     }
 
     private static class GoUpResult {
