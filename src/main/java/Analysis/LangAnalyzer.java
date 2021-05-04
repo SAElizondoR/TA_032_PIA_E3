@@ -11,11 +11,17 @@ public class LangAnalyzer {
 
     private int fileLine = 0;
     private HashSet<String> declaredIdentifiers = new HashSet<>();
+    private HashSet<String> reservedWords = new HashSet<>();
     private String filename;
 
     public LangAnalyzer(String filename)
     {
         this.filename = filename;
+        reservedWords.add("programa");
+        reservedWords.add("iniciar");
+        reservedWords.add("imprimir");
+        reservedWords.add("leer");
+        reservedWords.add("terminar");
     }
 
     public AnalysisOutput checkProgram() {
@@ -32,8 +38,13 @@ public class LangAnalyzer {
         return declaredIdentifiers.contains(identifier);
     }
 
-    public void registerIdentifier(String identifier) {
-        declaredIdentifiers.add(identifier);
+    //Retorna V si tod_o está bien
+    public boolean registerIdentifier(String identifier) {
+        if(!reservedWords.contains(identifier)) {
+            declaredIdentifiers.add(identifier);
+            return true;
+        }
+        return false;
     }
 
     //Método genérico para invalidar un programa cuya sentencia requiera estar dentro de un programa iniciada
@@ -89,6 +100,10 @@ public class LangAnalyzer {
 
         boolean hasOneInstruction = false;
 
+
+        ProgramStatus programStatus = new ProgramStatus();
+        programStatus.footerLine = 2000;
+        checkRead(programStatus);
         AnalysisOutput error = new AnalysisOutput();
 
 
@@ -123,12 +138,19 @@ public class LangAnalyzer {
                             error.setErrorLine(fileLine);
                             return error;
                         }
+
                         if(!hasOneInstruction)
                             hasOneInstruction=true;
-                        registerIdentifier(readInfo.getIdentifier()); //Si tod_o está bien registramos el identificador
+                        if(!registerIdentifier(readInfo.getIdentifier()))
+                        {
+                            error.setStatus(AnalysisOutput.Status.BAD_IDENTIFIER);
+                            error.setCause("El identificador es una palabra reservada");
+                            error.setErrorLine(fileLine);
+                            return error;
+                        }
+
                     } else //En caso de que haya alguna situacion con los requisitos de la sentencia tiramos error
                         return makeInvalidProgram(fileLine, hasHeader, hasStart, hasFooter, footerLine);
-
                     break;
                 case Print:
                     //REQUISITOS
@@ -192,7 +214,13 @@ public class LangAnalyzer {
                             return error;
                         }
 
-                        registerIdentifier(operationInfo.getIdentifier()); //???
+                        if(!registerIdentifier(operationInfo.getIdentifier()))
+                        {
+                            error.setStatus(AnalysisOutput.Status.BAD_IDENTIFIER);
+                            error.setCause("El identificador es una palabra reservada");
+                            error.setErrorLine(fileLine);
+                            return error;
+                        }
                         if(!hasOneInstruction)
                             hasOneInstruction=true;
 
@@ -318,6 +346,30 @@ public class LangAnalyzer {
                 error.setCause("El programa no tiene la sentencia terminar");
                 return error;
         }
+    }
+
+
+    private AnalysisOutput checkRead(ProgramStatus status)
+    {
+        status.footerLine = 0;
+        return null;
+    }
+
+    private static class ProgramStatus
+    {
+        LexicalAnalyzer analyzer = new LexicalAnalyzer();
+
+        String programName = null;
+        boolean hasHeader = false;
+        int headerLine = 0;
+
+        boolean hasStart = false;
+        int startLine = 0;
+
+        boolean hasFooter = false;
+        int footerLine = 0;
+
+        boolean hasOneInstruction = false;
     }
 
 }
