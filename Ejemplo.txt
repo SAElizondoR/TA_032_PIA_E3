@@ -4,6 +4,7 @@ leer i;
 leer j;
 leer k;
 p := 2;
-q := 2/0-(p*k)/05000/10;
+k := p*2^4;
+q := 2/20-(p*k)/05000/10;
 imprimir q;
 terminar.
