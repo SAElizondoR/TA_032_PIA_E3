@@ -29,14 +29,14 @@ public class PrintAnalyzer {
                     if(chars[i-1]=='\\')
                         continue;
 
-                if(onRawPrint) { //Se cierra comillas checamos que el siguiente sea un
+                if(onRawPrint) { //Se cierra comillas checamos que el siguiente sea un +
                     if (i < chars.length - 1)
                         if (chars[i + 1] != '+')
                             return false;
                 }
                 else
                 {
-                    if (i > 0)
+                    if (i > 0) //Se abre comillas checamos que el anterior sea un +
                         if (chars[i - 1] != '+')
                             return false;
                 }
