@@ -257,7 +257,7 @@ public class LangAnalyzer {
 
         if (status.hasStart) {
             error.setStatus(AnalysisOutput.Status.SYNTAX_ERROR);
-            error.setCause("Hay más de una sentencia inicio! [ERROR LEXICO???]");
+            error.setCause("Hay más de una sentencia inicio");
             error.setErrorLine(fileLine);
             return error;
         }
@@ -348,7 +348,7 @@ public class LangAnalyzer {
             if(!declaredIdentifiers.contains(identifier))
             {
                 error.setStatus(AnalysisOutput.Status.SYNTAX_ERROR);
-                error.setCause("La variable " + printInfo.getIdentifier() + " no está definida! [ERROR LEXICO???]");
+                error.setCause("La variable " + identifier + " no está definida");
                 error.setErrorLine(fileLine);
                 return error;
             }
@@ -391,15 +391,15 @@ public class LangAnalyzer {
 
         if (isDefined(readInfo.getIdentifier())) { //Si truena por que ya está definida
             error.setStatus(AnalysisOutput.Status.SYNTAX_ERROR);
-            error.setCause("La variable " + readInfo.getIdentifier() + " ya está definida! [ERROR LEXICO???]");
+            error.setCause("La variable " + readInfo.getIdentifier() + " ya está definida");
             error.setErrorLine(fileLine);
             return error;
         }
         if(!registerIdentifier(readInfo.getIdentifier())) {
-                error.setStatus(AnalysisOutput.Status.LEXICAL_ERROR);
-                error.setCause("El identificador es una palabra reservada");
-                error.setErrorLine(fileLine);
-                return error;
+            error.setStatus(AnalysisOutput.Status.LEXICAL_ERROR);
+            error.setCause("El identificador es una palabra reservada");
+            error.setErrorLine(fileLine);
+            return error;
         }
 
         if(!status.hasOneInstruction)
