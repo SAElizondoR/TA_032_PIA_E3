@@ -5,7 +5,7 @@ import Analysis.Results.*;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 
-public class LexicalAnalyzer {
+public class SentenceAnalyzer {
     public enum SentenceType {Operation, Print, Read, Header, Footer, Start}
 
     private static final String LEER = "leer ";

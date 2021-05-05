@@ -46,7 +46,6 @@ public class ArithmeticBacktracer {
                 openPar--;
                 if(openPar==0)
                 {
-                    endParPos = index;
                     StringBuilder sb = new StringBuilder();
                     closedExpr = chain.substring(beginParPos+1, endParPos);
                     newExpr = sb.append(chain.substring(0, beginParPos)).append('D').append(chain.substring(endParPos+1, chain.length())).toString();

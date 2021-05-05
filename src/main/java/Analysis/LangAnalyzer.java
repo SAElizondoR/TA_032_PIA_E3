@@ -21,7 +21,7 @@ public class LangAnalyzer {
         reservedWords.add("iniciar");
         reservedWords.add("imprimir");
         reservedWords.add("leer");
-        reservedWords.add("terminar");
+        reservedWords.add("terminar.");
     }
 
     public AnalysisOutput checkProgram() {
@@ -50,7 +50,7 @@ public class LangAnalyzer {
     public AnalysisOutput runTest(String filename) throws FileNotFoundException {
         File file = new File(filename);
         Scanner scanner = new Scanner(file);
-        LexicalAnalyzer analyzer = new LexicalAnalyzer();
+        SentenceAnalyzer analyzer = new SentenceAnalyzer();
 
         ProgramStatus programStatus = new ProgramStatus();
         AnalysisOutput error = null;
@@ -68,7 +68,7 @@ public class LangAnalyzer {
                 return error;
             }
 
-            LexicalAnalyzer.SentenceType type = analyzer.getSentenceType(line); //Sacamos el tipo
+            SentenceAnalyzer.SentenceType type = analyzer.getSentenceType(line); //Sacamos el tipo
 
             switch (type) {
                 case Read:
@@ -395,7 +395,7 @@ public class LangAnalyzer {
 
     private static class ProgramStatus
     {
-        LexicalAnalyzer analyzer = new LexicalAnalyzer();
+        SentenceAnalyzer analyzer = new SentenceAnalyzer();
 
         String programName = null;
         boolean hasHeader = false;

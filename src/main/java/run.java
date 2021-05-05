@@ -12,6 +12,7 @@ import java.util.regex.Pattern;
 
 
 public class run {
+    private static ArrayList<String> subChains = new ArrayList<>();
     static public void main(String[] args) {
         LangAnalyzer analyzer = new LangAnalyzer("C:\\Users\\garza\\OneDrive\\TA_032_PIA_E3\\Ejemplo.txt");
         AnalysisOutput output = analyzer.checkProgram();
@@ -30,4 +31,5 @@ public class run {
         }
         System.out.println("PROGRAMA SIN ERRORES");
     }
+
 }
