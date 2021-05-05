@@ -16,6 +16,8 @@ public class run {
     static public void main(String[] args) {
         LangAnalyzer analyzer = new LangAnalyzer("C:\\Users\\garza\\OneDrive\\TA_032_PIA_E3\\Ejemplo.txt");
         AnalysisOutput output = analyzer.checkProgram();
+        PrintAnalyzer printAnalyzer = new PrintAnalyzer("j2");
+        boolean isValid = printAnalyzer.isValid();
         if(output.getStatus() != AnalysisOutput.Status.NO_ERROR)
         {
             String errorType = "";

@@ -6,5 +6,5 @@ leer kl;
 p := 2;
 k := p*2^4;
 q := (2/20-(p*kl)/10000/010);
-imprimir q;
+imprimir "wasd"+p+"asdas"+"\"asdasd\"";
 terminar.

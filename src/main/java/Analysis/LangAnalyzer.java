@@ -333,11 +333,25 @@ public class LangAnalyzer {
         if (printInfo.getStatus() != AnalysisOutput.Status.NO_ERROR) //Si truena por un error lexico/gramático
             return printInfo.makeOutput(fileLine);
 
-        if (!isDefined(printInfo.getIdentifier())) { //Si truena por que no está definida
+        PrintAnalyzer printAnalyzer = new PrintAnalyzer(printInfo.getIdentifier());
+        boolean isValid = printAnalyzer.isValid();
+        if(!isValid)
+        {
             error.setStatus(AnalysisOutput.Status.SYNTAX_ERROR);
-            error.setCause("La variable " + printInfo.getIdentifier() + " no está definida! [ERROR LEXICO???]");
+            error.setCause("Expresión inválida");
             error.setErrorLine(fileLine);
             return error;
+        }
+
+        for(String identifier : printAnalyzer.getIdentifiers())
+        {
+            if(!declaredIdentifiers.contains(identifier))
+            {
+                error.setStatus(AnalysisOutput.Status.SYNTAX_ERROR);
+                error.setCause("La variable " + printInfo.getIdentifier() + " no está definida! [ERROR LEXICO???]");
+                error.setErrorLine(fileLine);
+                return error;
+            }
         }
         return null;
     }

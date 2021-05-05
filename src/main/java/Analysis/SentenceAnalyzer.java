@@ -69,12 +69,6 @@ public class SentenceAnalyzer {
         }
 
         String identifier = sentence.substring(IMPRIMIR.length(), sentence.length()-1);
-        if(!identifier.matches(RegexStrings.IDENTIFIER_NAME))
-        {
-            printInfo.setStatus(AnalysisOutput.Status.LEXICAL_ERROR);
-            printInfo.setErrorCause("Nombre inválido");
-            return printInfo;
-        }
         printInfo.setStatus(AnalysisOutput.Status.NO_ERROR);
         printInfo.setIdentifier(identifier);
         return printInfo;
