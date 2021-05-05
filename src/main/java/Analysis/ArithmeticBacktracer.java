@@ -137,12 +137,12 @@ public class ArithmeticBacktracer {
     public ArithmeticBacktrackerStatus checkExpr() {
         ArithmeticBacktrackerStatus status = new ArithmeticBacktrackerStatus();
         status.errorCause = "Expresión inválida";
-        status.status = AnalysisOutput.Status.BAD_IDENTIFIER;
+        status.status = AnalysisOutput.Status.LEXICAL_ERROR;
         if(badIdentifier)
         {
             status.errorCause = "Nombre de identificador \"" + badIdentifierStr +"\" inválido";
             status.badIdentifier = badIdentifierStr;
-            status.status = AnalysisOutput.Status.BAD_IDENTIFIER;
+            status.status = AnalysisOutput.Status.LEXICAL_ERROR;
             return status;
         }
 
@@ -386,7 +386,9 @@ public class ArithmeticBacktracer {
         for(int i = 0; i<countBar; i++)
         {
             int location = clone.indexOf("/");
-            clone.replace("/", "%");
+            char[] newClone = clone.toCharArray();
+            newClone[location] = '%';
+            clone = String.valueOf(newClone);
             for(int p=location+1; p<clone.length(); p++)
             {
                 if(matchesOperator(chars[p]) || p+1==clone.length())

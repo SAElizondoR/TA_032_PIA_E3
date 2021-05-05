@@ -2,9 +2,9 @@ programa gato;
 iniciar
 leer i;
 leer j;
-leer k;
+leer kl;
 p := 2;
 k := p*2^4;
-q := 2/20-(p*k)/05000/10;
+q := 2/20-(p*kl)/10000/010;
 imprimir q;
 terminar.

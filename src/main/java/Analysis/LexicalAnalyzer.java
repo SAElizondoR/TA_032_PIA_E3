@@ -40,12 +40,21 @@ public class LexicalAnalyzer {
         ReadInfo readInfo = new ReadInfo();
         if(!endsWithSC(sentence))
         {
-            readInfo.setStatus(AnalysisOutput.Status.NO_SC);
+            readInfo.setStatus(AnalysisOutput.Status.SYNTAX_ERROR);
             readInfo.setErrorCause("No termina en ;");
             return readInfo;
         }
+
+        String identifier = sentence.substring(LEER.length(), sentence.length()-1);
+        if(!identifier.matches(RegexStrings.IDENTIFIER_NAME))
+        {
+            readInfo.setStatus(AnalysisOutput.Status.LEXICAL_ERROR);
+            readInfo.setErrorCause("Nombre inválido");
+            return readInfo;
+        }
+
         readInfo.setStatus(AnalysisOutput.Status.NO_ERROR);
-        readInfo.setIdentifier(sentence.substring(LEER.length(), sentence.length()-1));
+        readInfo.setIdentifier(identifier);
         return readInfo;
     }
 
@@ -54,14 +63,15 @@ public class LexicalAnalyzer {
         PrintInfo printInfo = new PrintInfo();
         if(!endsWithSC(sentence))
         {
-            printInfo.setStatus(AnalysisOutput.Status.NO_SC);
+            printInfo.setStatus(AnalysisOutput.Status.SYNTAX_ERROR);
             printInfo.setErrorCause("No termina en ;");
             return printInfo;
         }
+
         String identifier = sentence.substring(IMPRIMIR.length(), sentence.length()-1);
         if(!identifier.matches(RegexStrings.IDENTIFIER_NAME))
         {
-            printInfo.setStatus(AnalysisOutput.Status.BAD_IDENTIFIER);
+            printInfo.setStatus(AnalysisOutput.Status.LEXICAL_ERROR);
             printInfo.setErrorCause("Nombre inválido");
             return printInfo;
         }
@@ -75,7 +85,7 @@ public class LexicalAnalyzer {
         OperationInfo operationInfo = new OperationInfo();
         if(!endsWithSC(sentence))
         {
-            operationInfo.setStatus(AnalysisOutput.Status.NO_SC);
+            operationInfo.setStatus(AnalysisOutput.Status.SYNTAX_ERROR);
             operationInfo.setErrorCause("No termina en ;");
             return operationInfo;
         }
@@ -95,15 +105,15 @@ public class LexicalAnalyzer {
         String identifier = builder.toString();
         if(!identifier.matches(RegexStrings.IDENTIFIER_NAME)) //Si el identificador es inválido
         {
-            operationInfo.setStatus(AnalysisOutput.Status.BAD_IDENTIFIER);
-            operationInfo.setErrorCause("Nombre de identificador inválido");
+            operationInfo.setStatus(AnalysisOutput.Status.LEXICAL_ERROR);
+            operationInfo.setErrorCause("Nombre inválido");
             return operationInfo;
         }
 
         String rest = sentence.substring(identifierEnd+1);
         if(!rest.startsWith(":="))
         {
-            operationInfo.setStatus(AnalysisOutput.Status.EXPECTED_OPERATOR);
+            operationInfo.setStatus(AnalysisOutput.Status.SYNTAX_ERROR);
             operationInfo.setErrorCause("Se esperaba operador se asignación");
             return operationInfo;
         }
@@ -122,14 +132,14 @@ public class LexicalAnalyzer {
         HeaderInfo headerInfo = new HeaderInfo();
         if(!endsWithSC(sentence))
         {
-            headerInfo.setStatus(AnalysisOutput.Status.NO_SC);
+            headerInfo.setStatus(AnalysisOutput.Status.SYNTAX_ERROR);
             headerInfo.setErrorCause("No termina en ;");
             return headerInfo;
         }
         String identifier = sentence.substring(IMPRIMIR.length(), sentence.length()-1);
         if(!identifier.matches(RegexStrings.IDENTIFIER_NAME))
         {
-            headerInfo.setStatus(AnalysisOutput.Status.BAD_IDENTIFIER);
+            headerInfo.setStatus(AnalysisOutput.Status.LEXICAL_ERROR);
             headerInfo.setErrorCause("Nombre inválido");
             return headerInfo;
         }
