@@ -47,6 +47,10 @@ public class LangAnalyzer {
         return false;
     }
 
+    boolean isBlankString(String string) {
+        return string == null || string.trim().isEmpty();
+    }
+
     public AnalysisOutput runTest(String filename) throws FileNotFoundException {
         File file = new File(filename);
         Scanner scanner = new Scanner(file);
@@ -59,7 +63,7 @@ public class LangAnalyzer {
         {
             fileLine++;
             String line = scanner.nextLine();
-            if (line.isBlank()) //Si la linea es blanca la saltamos
+            if (isBlankString(line)) //Si la linea es blanca la saltamos
             {
                 error = new AnalysisOutput();
                 error.setStatus(AnalysisOutput.Status.SYNTAX_ERROR);

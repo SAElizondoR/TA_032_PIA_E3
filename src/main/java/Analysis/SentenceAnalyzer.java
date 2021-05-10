@@ -58,6 +58,10 @@ public class SentenceAnalyzer {
         return readInfo;
     }
 
+    boolean isBlankString(String string) {
+        return string == null || string.trim().isEmpty();
+    }
+
     public PrintInfo getLinePrintInfo(String sentence)
     {
         PrintInfo printInfo = new PrintInfo();
@@ -69,6 +73,14 @@ public class SentenceAnalyzer {
         }
 
         String identifier = sentence.substring(IMPRIMIR.length(), sentence.length()-1);
+
+        if(isBlankString(identifier) || identifier.matches("([ +])*"))
+        {
+            printInfo.setStatus(AnalysisOutput.Status.SYNTAX_ERROR);
+            printInfo.setErrorCause("Expresión vacía");
+            return printInfo;
+        }
+
         printInfo.setStatus(AnalysisOutput.Status.NO_ERROR);
         printInfo.setIdentifier(identifier);
         return printInfo;
@@ -112,6 +124,12 @@ public class SentenceAnalyzer {
             return operationInfo;
         }
 
+        if(ASIGNACION.length()+1> rest.length()-1)
+        {
+            operationInfo.setStatus(AnalysisOutput.Status.SYNTAX_ERROR);
+            operationInfo.setErrorCause("Se esperaba una asignación");
+            return operationInfo;
+        }
 
         rest = rest.substring(ASIGNACION.length()+1, rest.length()-1);
 
