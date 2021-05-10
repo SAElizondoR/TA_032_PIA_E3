@@ -305,18 +305,31 @@ public class ArithmeticBacktracer {
 
     //Checa que no haya simbolos extraños
     private boolean matchesSymbols(char c) {
-        return switch (c) {
-            case 'S', 'A', 'B', 'C', 'D' -> true;
-            default -> false;
-        };
+        switch (c)
+        {
+            case 'S' :
+            case 'C' :
+            case 'A' :
+            case 'B' :
+            case 'D' :
+                return true;
+        }
+        return false;
     }
 
     private boolean matchesOperator(char c)
     {
-        return switch (c) {
-            case '+', '-', '*', '/', '(', ')' -> true;
-            default -> false;
-        };
+        switch (c)
+        {
+            case '+' :
+            case '-' :
+            case '*' :
+            case '/' :
+            case '(' :
+            case ')' :
+                return true;
+        }
+        return false;
     }
 
     private String constant(String str){

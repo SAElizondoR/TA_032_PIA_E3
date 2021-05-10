@@ -1,0 +1,11 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="TA_032_PIA_E3">
+    <output-path>$PROJECT_DIR$</output-path>
+    <root id="archive" name="TA_032_PIA_E3.jar">
+      <element id="module-output" name="TA_032_PIA_E3" />
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/META-INF/MANIFEST.MF" />
+      </element>
+    </root>
+  </artifact>
+</component>
