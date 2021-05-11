@@ -136,12 +136,12 @@ public class ArithmeticBacktracer {
     public ArithmeticBacktrackerStatus checkExpr() {
         ArithmeticBacktrackerStatus status = new ArithmeticBacktrackerStatus();
         status.errorCause = "Expresión inválida";
-        status.status = AnalysisOutput.Status.LEXICAL_ERROR;
+        status.status = AnalysisOutput.Status.SYNTAX_ERROR;
         if(badIdentifier)
         {
             status.errorCause = "Nombre de identificador \"" + badIdentifierStr +"\" inválido";
             status.badIdentifier = badIdentifierStr;
-            status.status = AnalysisOutput.Status.LEXICAL_ERROR;
+            status.status = AnalysisOutput.Status.SYNTAX_ERROR;
             return status;
         }
 
