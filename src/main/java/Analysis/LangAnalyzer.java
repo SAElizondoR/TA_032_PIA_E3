@@ -10,9 +10,9 @@ import java.util.Scanner;
 public class LangAnalyzer {
 
     private int fileLine = 0;
-    private HashSet<String> declaredIdentifiers = new HashSet<>();
-    private HashSet<String> reservedWords = new HashSet<>();
-    private String filename;
+    private final HashSet<String> declaredIdentifiers = new HashSet<>();
+    private final HashSet<String> reservedWords = new HashSet<>();
+    private final String filename;
 
     public LangAnalyzer(String filename)
     {
@@ -108,6 +108,7 @@ public class LangAnalyzer {
             error.setErrorLine(fileLine);
             error.setCause("El programa no tiene al menos una instrucción");
             scanner.close();
+
             return error;
         }
 

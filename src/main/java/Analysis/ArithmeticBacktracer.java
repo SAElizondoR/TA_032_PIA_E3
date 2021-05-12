@@ -6,11 +6,11 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 public class ArithmeticBacktracer {
-    private String expr = null;
-    private String originalExpr = null;
-    private ArrayList<String> subChains = new ArrayList<>();
+    private String expr;
+    private final String originalExpr;
+    private final ArrayList<String> subChains = new ArrayList<>();
 
-    private HashSet<String> identifiers = new HashSet<>();
+    private final HashSet<String> identifiers = new HashSet<>();
     private boolean badIdentifier = false;
     private String badIdentifierStr = null;
 
@@ -26,11 +26,11 @@ public class ArithmeticBacktracer {
         char[] chars = chain.toCharArray();
         boolean beginExpr = false;
         int beginParPos = 0;
-        int endParPos = 0;
+        int endParPos;
         int openPar = 0;
         int index = 0;
-        String closedExpr = null;
-        String newExpr = null;
+        String closedExpr;
+        String newExpr;
         for(char c : chars)
         {
             if(c == '(') {
@@ -48,7 +48,7 @@ public class ArithmeticBacktracer {
                 {
                     StringBuilder sb = new StringBuilder();
                     closedExpr = chain.substring(beginParPos+1, endParPos);
-                    newExpr = sb.append(chain.substring(0, beginParPos)).append('D').append(chain.substring(endParPos+1, chain.length())).toString();
+                    newExpr = sb.append(chain.substring(0, beginParPos)).append('D').append(chain.substring(endParPos+1)).toString();
                     splitChain(closedExpr);
                     splitChain(newExpr);
                     break;
@@ -141,7 +141,6 @@ public class ArithmeticBacktracer {
         {
             status.errorCause = "Nombre de identificador \"" + badIdentifierStr +"\" inválido";
             status.badIdentifier = badIdentifierStr;
-            status.status = AnalysisOutput.Status.LEXICAL_ERROR;
             return status;
         }
 
@@ -149,7 +148,7 @@ public class ArithmeticBacktracer {
 
         for(String chain : subChains) {
             if (chain.equals("")) return status;
-            GoUpResult result = null;
+            GoUpResult result;
             do {
                 chain = constant(chain);
                 chain = parenthesis(chain);
@@ -414,7 +413,7 @@ public class ArithmeticBacktracer {
 
     private static class GoUpResult {
         public String str;
-        public boolean didGoUp = false;
+        public boolean didGoUp;
 
         GoUpResult(String str, boolean didGoUp) {
             this.str = str;
@@ -428,12 +427,12 @@ public class ArithmeticBacktracer {
         public String errorCause = null;
         public String badIdentifier = null;
 
-        public ArithmeticBacktrackerStatus(){};
-        public ArithmeticBacktrackerStatus(AnalysisOutput.Status status, String errorCause, String badIdentifier)
+        public ArithmeticBacktrackerStatus(){}
+        /* public ArithmeticBacktrackerStatus(AnalysisOutput.Status status, String errorCause, String badIdentifier)
         {
             this.status = status;
             this.errorCause = errorCause;
             this.badIdentifier = badIdentifier;
-        }
+        } */
     }
 }

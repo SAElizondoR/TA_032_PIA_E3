@@ -2,9 +2,6 @@ package Analysis;
 
 import Analysis.Results.*;
 
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
-
 public class SentenceAnalyzer {
     public enum SentenceType {Operation, Print, Read, Header, Footer, Start}
 

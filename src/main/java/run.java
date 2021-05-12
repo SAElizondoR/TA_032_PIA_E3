@@ -1,20 +1,20 @@
 import Analysis.*;
 import Analysis.Results.AnalysisOutput;
 
-import java.io.IOException;
-import java.util.ArrayList;
+// import java.io.IOException;
+// import java.util.ArrayList;
 import java.util.Scanner;
 
 
 public class run {
-    private static ArrayList<String> subChains = new ArrayList<>();
+    // private static ArrayList<String> subChains = new ArrayList<>();
     static public void main(String[] args) {
 
         boolean continuar = true;
         Scanner  reader = new Scanner (System.in);
         while(continuar) {
             System.out.println("Ingrese la ruta local del archivo con extensión");
-            String name = "";
+            String name;
             name = reader.nextLine();
 
             System.out.println("Leyendo archivo : " + name);
@@ -22,7 +22,7 @@ public class run {
             LangAnalyzer analyzer = new LangAnalyzer(name);
             AnalysisOutput output = analyzer.checkProgram();
             PrintAnalyzer printAnalyzer = new PrintAnalyzer("j2");
-            boolean isValid = printAnalyzer.isValid();
+            printAnalyzer.isValid();
             if (output.getStatus() != AnalysisOutput.Status.NO_ERROR) {
                 String errorType = "";
                 switch (output.getStatus()) {

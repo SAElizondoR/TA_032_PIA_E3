@@ -1,7 +1,7 @@
 package Analysis.Results;
 
 public class AnalysisOutput {
-   public enum Status{NO_ERROR, LEXICAL_ERROR, SYNTAX_ERROR, COULD_NOT_OPEN_FILE, BAD_EXPRESSION}
+   public enum Status{NO_ERROR, LEXICAL_ERROR, SYNTAX_ERROR, COULD_NOT_OPEN_FILE}
 
     private Status status = Status.COULD_NOT_OPEN_FILE;
     private int errorLine = 0;

@@ -4,7 +4,7 @@ leer i;
 leer j;
 leer kl;
 p := 2;
-k := p*2^4;
+k := p*2^^4;
 q := (2/20-(p*kl)/10000/010);
 imprimir q;
 terminar.
